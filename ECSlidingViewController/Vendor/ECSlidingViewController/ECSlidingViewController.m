@@ -102,6 +102,9 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
   
   _topViewController = theTopViewController;
   
+  if (!theTopViewController)
+        return;
+    
   [self addChildViewController:self.topViewController];
   [self.topViewController didMoveToParentViewController:self];
   
