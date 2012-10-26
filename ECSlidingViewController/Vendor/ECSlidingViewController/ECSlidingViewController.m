@@ -95,16 +95,14 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
 {
   CGRect topViewFrame = _topViewController ? _topViewController.view.frame : self.view.bounds;
   
+    UIViewController *oldTop = _topViewController;
+    _topViewController = theTopViewController;
+
   [self removeTopViewSnapshot];
-  [_topViewController.view removeFromSuperview];
-  [_topViewController willMoveToParentViewController:nil];
-  [_topViewController removeFromParentViewController];
+  [oldTop.view removeFromSuperview];
+  [oldTop willMoveToParentViewController:nil];
+  [oldTop removeFromParentViewController];
   
-  _topViewController = theTopViewController;
-  
-  if (!theTopViewController)
-        return;
-    
   [self addChildViewController:self.topViewController];
   [self.topViewController didMoveToParentViewController:self];
   
