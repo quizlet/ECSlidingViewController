@@ -283,79 +283,78 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
 
 - (void)anchorTopViewTo:(ECSide)side
 {
-  [self anchorTopViewTo:side animations:nil onComplete:nil];
+    [self anchorTopViewTo:side animateChange:YES animations:nil onComplete:nil];
 }
 
-- (void)anchorTopViewTo:(ECSide)side animations:(void (^)())animations onComplete:(void (^)())complete
+- (void)anchorTopViewTo:(ECSide)side animateChange:(BOOL)an animations:(void(^)())animations onComplete:(void(^)())complete
 {
-  CGFloat newCenter = self.topView.center.x;
-  
-  if (side == ECLeft) {
-    newCenter = self.anchorLeftTopViewCenter;
-  } else if (side == ECRight) {
-    newCenter = self.anchorRightTopViewCenter;
-  }
-  
-  [self topViewHorizontalCenterWillChange:newCenter];
-  
-  [UIView animateWithDuration:0.25f animations:^{
-    if (animations) {
-      animations();
+    CGFloat newCenter = self.topView.center.x;
+    
+    if (side == ECLeft) {
+        newCenter = self.anchorLeftTopViewCenter;
+    } else if (side == ECRight) {
+        newCenter = self.anchorRightTopViewCenter;
     }
-    [self updateTopViewHorizontalCenter:newCenter];
-  } completion:^(BOOL finished){
-    if (_resetStrategy & ECPanning) {
-      self.panGesture.enabled = YES;
-    } else {
-      self.panGesture.enabled = NO;
-    }
-    if (complete) {
-      complete();
-    }
-    _topViewIsOffScreen = NO;
-    [self addTopViewSnapshot];
-    dispatch_async(dispatch_get_main_queue(), ^{
-      NSString *key = (side == ECLeft) ? ECSlidingViewTopDidAnchorLeft : ECSlidingViewTopDidAnchorRight;
-      [[NSNotificationCenter defaultCenter] postNotificationName:key object:self userInfo:nil];
-    });
-  }];
+    
+    [self topViewHorizontalCenterWillChange:newCenter];
+    
+    [UIView animateWithDuration:0.25f*an animations:^{
+        if (animations) {
+            animations();
+        }
+        [self updateTopViewHorizontalCenter:newCenter];
+    } completion:^(BOOL finished){
+        if (_resetStrategy & ECPanning) {
+            self.panGesture.enabled = YES;
+        } else {
+            self.panGesture.enabled = NO;
+        }
+        if (complete) {
+            complete();
+        }
+        _topViewIsOffScreen = NO;
+        [self addTopViewSnapshot];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *key = (side == ECLeft) ? ECSlidingViewTopDidAnchorLeft : ECSlidingViewTopDidAnchorRight;
+            [[NSNotificationCenter defaultCenter] postNotificationName:key object:self userInfo:nil];
+        });
+    }];
 }
 
 - (void)anchorTopViewOffScreenTo:(ECSide)side
 {
-  [self anchorTopViewOffScreenTo:side animations:nil onComplete:nil];
+    [self anchorTopViewOffScreenTo:side animateChange:YES animations:nil onComplete:nil];
 }
 
-- (void)anchorTopViewOffScreenTo:(ECSide)side animations:(void(^)())animations onComplete:(void(^)())complete
+- (void)anchorTopViewOffScreenTo:(ECSide)side animateChange:(BOOL)an animations:(void(^)())animations onComplete:(void(^)())complete
 {
-  CGFloat newCenter = self.topView.center.x;
-  
-  if (side == ECLeft) {
-    newCenter = -self.resettedCenter;
-  } else if (side == ECRight) {
-    newCenter = self.screenWidth + self.resettedCenter;
-  }
-  
-  [self topViewHorizontalCenterWillChange:newCenter];
-  
-  [UIView animateWithDuration:0.25f animations:^{
-    if (animations) {
-      animations();
+    CGFloat newCenter = self.topView.center.x;
+    
+    if (side == ECLeft) {
+        newCenter = -self.resettedCenter;
+    } else if (side == ECRight) {
+        newCenter = self.screenWidth + self.resettedCenter;
     }
-    [self updateTopViewHorizontalCenter:newCenter];
-  } completion:^(BOOL finished){
-    if (complete) {
-      complete();
-    }
-    _topViewIsOffScreen = YES;
-    [self addTopViewSnapshot];
-    dispatch_async(dispatch_get_main_queue(), ^{
-      NSString *key = (side == ECLeft) ? ECSlidingViewTopDidAnchorLeft : ECSlidingViewTopDidAnchorRight;
-      [[NSNotificationCenter defaultCenter] postNotificationName:key object:self userInfo:nil];
-    });
-  }];
+    
+    [self topViewHorizontalCenterWillChange:newCenter];
+    
+    [UIView animateWithDuration:0.25f*an animations:^{
+        if (animations) {
+            animations();
+        }
+        [self updateTopViewHorizontalCenter:newCenter];
+    } completion:^(BOOL finished){
+        if (complete) {
+            complete();
+        }
+        _topViewIsOffScreen = YES;
+        [self addTopViewSnapshot];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *key = (side == ECLeft) ? ECSlidingViewTopDidAnchorLeft : ECSlidingViewTopDidAnchorRight;
+            [[NSNotificationCenter defaultCenter] postNotificationName:key object:self userInfo:nil];
+        });
+    }];
 }
-
 - (void)resetTopView
 {
   [self resetTopViewWithAnimations:nil onComplete:nil];

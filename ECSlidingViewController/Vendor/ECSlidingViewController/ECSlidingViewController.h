@@ -162,7 +162,7 @@ typedef enum {
  @param animations Perform changes to properties that will be animated while top view is moved off screen. Can be nil.
  @param onComplete Executed after the animation is completed. Can be nil.
  */
-- (void)anchorTopViewTo:(ECSide)side animations:(void(^)())animations onComplete:(void(^)())complete;
+- (void)anchorTopViewTo:(ECSide)side animateChange:(BOOL)an animations:(void(^)())animations onComplete:(void(^)())complete;
 
 /** Slides the top view off of the screen in the direction of the specified side.
  
@@ -176,7 +176,7 @@ typedef enum {
  @param animations Perform changes to properties that will be animated while top view is moved off screen. Can be nil.
  @param onComplete Executed after the animation is completed. Can be nil.
  */
-- (void)anchorTopViewOffScreenTo:(ECSide)side animations:(void(^)())animations onComplete:(void(^)())complete;
+- (void)anchorTopViewOffScreenTo:(ECSide)side animateChange:(BOOL)an animations:(void(^)())animations onComplete:(void(^)())complete;
 
 /** Slides the top view back to the center. */
 - (void)resetTopView;
