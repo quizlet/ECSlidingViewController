@@ -564,12 +564,12 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
     
     frame.size.width = newWidth;
     
-    self.underLeftView.frame = frame;
+   // self.underLeftView.frame = frame;
   } else if (self.underLeftWidthLayout == ECFixedRevealWidth) {
     CGRect frame = self.view.bounds;
     
     frame.size.width = self.anchorRightRevealAmount;
-    self.underLeftView.frame = frame;
+    //self.underLeftView.frame = frame;
   } else {
     [NSException raise:@"Invalid Width Layout" format:@"underLeftWidthLayout must be a valid ECViewWidthLayout"];
   }
