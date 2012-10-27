@@ -254,6 +254,8 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
   } else if (recognizer.state == UIGestureRecognizerStateChanged) {
     CGFloat panAmount = self.initialTouchPositionX - currentTouchPositionX;
     CGFloat newCenterPosition = self.initialHoizontalCenter - panAmount;
+      if (newCenterPosition > 320-[self anchorRightPeekAmount]+160)
+          newCenterPosition = 320-[self anchorRightPeekAmount]+160;
     
     if ((newCenterPosition < self.resettedCenter && self.anchorLeftTopViewCenter == NSNotFound) || (newCenterPosition > self.resettedCenter && self.anchorRightTopViewCenter == NSNotFound)) {
       newCenterPosition = self.resettedCenter;
@@ -564,12 +566,12 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
     
     frame.size.width = newWidth;
     
-   // self.underLeftView.frame = frame;
+    self.underLeftView.frame = frame;
   } else if (self.underLeftWidthLayout == ECFixedRevealWidth) {
     CGRect frame = self.view.bounds;
     
     frame.size.width = self.anchorRightRevealAmount;
-    //self.underLeftView.frame = frame;
+    self.underLeftView.frame = frame;
   } else {
     [NSException raise:@"Invalid Width Layout" format:@"underLeftWidthLayout must be a valid ECViewWidthLayout"];
   }
