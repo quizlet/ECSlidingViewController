@@ -183,6 +183,7 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
   self.topViewSnapshot = [[UIView alloc] initWithFrame:self.topView.bounds];
   [self.topViewSnapshot setAutoresizingMask:self.autoResizeToFillScreen];
   [self.topViewSnapshot addGestureRecognizer:self.resetTapGesture];
+  [self.topViewSnapshot addGestureRecognizer:self.panGesture];
 }
 
 - (void)viewWillAppear:(BOOL)animated
