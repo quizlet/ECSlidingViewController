@@ -183,7 +183,6 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
   self.topViewSnapshot = [[UIView alloc] initWithFrame:self.topView.bounds];
   [self.topViewSnapshot setAutoresizingMask:self.autoResizeToFillScreen];
   [self.topViewSnapshot addGestureRecognizer:self.resetTapGesture];
-  [self.topViewSnapshot addGestureRecognizer:self.panGesture];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -301,6 +300,8 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
     
     [self topViewHorizontalCenterWillChange:newCenter];
     
+    [[self topViewSnapshot] addGestureRecognizer:[self panGesture]];
+    
     [UIView animateWithDuration:0.25f*an animations:^{
         if (animations) {
             animations();
@@ -341,6 +342,8 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
     
     [self topViewHorizontalCenterWillChange:newCenter];
     
+    [[self topViewSnapshot] addGestureRecognizer:[self panGesture]];
+    
     [UIView animateWithDuration:0.25f*an animations:^{
         if (animations) {
             animations();
@@ -367,6 +370,8 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
 {
   [self topViewHorizontalCenterWillChange:self.resettedCenter];
   
+  [[self topView] addGestureRecognizer:[self panGesture]];
+    
   [UIView animateWithDuration:0.25f animations:^{
     if (animations) {
       animations();
