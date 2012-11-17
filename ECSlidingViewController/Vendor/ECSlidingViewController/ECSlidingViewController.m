@@ -258,7 +258,7 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
   } else if (recognizer.state == UIGestureRecognizerStateChanged) {
     CGFloat panAmount = self.initialTouchPositionX - currentTouchPositionX;
     CGFloat newCenterPosition = self.initialHoizontalCenter - panAmount;
-      if (newCenterPosition > 320-[self anchorRightPeekAmount]+160)
+      if (newCenterPosition > 320-[self anchorRightPeekAmount]+160 && [self underLeftWidthLayout] != ECFullWidth)
           newCenterPosition = 320-[self anchorRightPeekAmount]+160;
     
     if ((newCenterPosition < self.resettedCenter && self.anchorLeftTopViewCenter == NSNotFound) || (newCenterPosition > self.resettedCenter && self.anchorRightTopViewCenter == NSNotFound)) {
@@ -273,9 +273,15 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
     CGFloat currentVelocityX     = currentVelocityPoint.x;
     
     if ([self underLeftShowing] && currentVelocityX > 100) {
-      [self anchorTopViewTo:ECRight];
+        if ([self underLeftWidthLayout] == ECFullWidth)
+            [self anchorTopViewOffScreenTo:ECRight];
+        else
+            [self anchorTopViewTo:ECRight];
     } else if ([self underRightShowing] && currentVelocityX < 100) {
-      [self anchorTopViewTo:ECLeft];
+        if ([self underLeftWidthLayout] == ECFullWidth)
+            [self anchorTopViewOffScreenTo:ECLeft];
+        else
+            [self anchorTopViewTo:ECLeft];
     } else {
       [self resetTopView];
     }
@@ -373,8 +379,13 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
 - (void)resetTopViewWithAnimations:(void(^)())animations onComplete:(void(^)())complete
 {
   [self topViewHorizontalCenterWillChange:self.resettedCenter];
-  
-  [[self topView] addGestureRecognizer:[self panGesture]];
+    
+    if ([[self topViewController] isKindOfClass:[UINavigationController class]]) {
+        UIViewController *rootController = [[(UINavigationController *)[self topViewController] viewControllers] objectAtIndex:0];
+        [[rootController view] addGestureRecognizer:[self panGesture]];
+    } else {
+        [[self topView] addGestureRecognizer:[self panGesture]];
+    }
     
   [UIView animateWithDuration:0.25f animations:^{
     if (animations) {
