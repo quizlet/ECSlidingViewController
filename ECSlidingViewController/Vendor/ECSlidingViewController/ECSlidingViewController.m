@@ -194,11 +194,19 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
 }
 
 -(NSUInteger)supportedInterfaceOrientations {
-    return [[self topViewController] supportedInterfaceOrientations];
+    if ([self underLeftViewController])
+        return [[self underLeftViewController] supportedInterfaceOrientations];
+    else if ([self topViewController])
+        return [[self topViewController] supportedInterfaceOrientations];
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return [[self topViewController] shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    if ([self underLeftViewController])
+        return [[self underLeftViewController] shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    else if ([self topViewController])
+        return [[self topViewController] shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
