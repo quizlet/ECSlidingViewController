@@ -194,10 +194,10 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
 }
 
 -(NSUInteger)supportedInterfaceOrientations {
-    if ([self underLeftViewController])
-        return [[self underLeftViewController] supportedInterfaceOrientations];
-    else if ([self topViewController])
+    if ([self topViewController])
         return [[self topViewController] supportedInterfaceOrientations];
+    else if ([self underLeftViewController])
+        return [[self underLeftViewController] supportedInterfaceOrientations];
     return UIInterfaceOrientationMaskPortrait;
 }
 
