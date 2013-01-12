@@ -202,10 +202,10 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
 }
 
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    if ([self underLeftViewController])
-        return [[self underLeftViewController] shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
-    else if ([self topViewController])
+    if ([self topViewController])
         return [[self topViewController] shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    else if ([self underLeftViewController])
+        return [[self underLeftViewController] shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
     return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
