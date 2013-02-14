@@ -270,8 +270,16 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
   } else if (recognizer.state == UIGestureRecognizerStateChanged) {
     CGFloat panAmount = self.initialTouchPositionX - currentTouchPositionX;
     CGFloat newCenterPosition = self.initialHoizontalCenter - panAmount;
-      if (newCenterPosition > 320-[self anchorRightPeekAmount]+160 && [self underLeftWidthLayout] != ECFullWidth)
-          newCenterPosition = 320-[self anchorRightPeekAmount]+160;
+    
+    if ([self underLeftWidthLayout] == ECVariableRevealWidth) {
+          CGFloat screenWidth = (UIInterfaceOrientationIsLandscape([self interfaceOrientation]) ? [[UIScreen mainScreen] bounds].size.height : [[UIScreen mainScreen] bounds].size.width);
+          if (newCenterPosition > screenWidth-[self anchorRightPeekAmount]+screenWidth/2)
+              newCenterPosition = 320-[self anchorRightPeekAmount]+screenWidth/2;
+    } else if ([self underLeftWidthLayout] == ECFixedRevealWidth) {
+          CGFloat screenWidth = (UIInterfaceOrientationIsLandscape([self interfaceOrientation]) ? [[UIScreen mainScreen] bounds].size.height : [[UIScreen mainScreen] bounds].size.width);
+            if (newCenterPosition-screenWidth/2 > [self anchorRightRevealAmount])
+              newCenterPosition = [self anchorRightRevealAmount]+screenWidth/2;
+    }
     
     if ((newCenterPosition < self.resettedCenter && self.anchorLeftTopViewCenter == NSNotFound) || (newCenterPosition > self.resettedCenter && self.anchorRightTopViewCenter == NSNotFound)) {
       newCenterPosition = self.resettedCenter;
